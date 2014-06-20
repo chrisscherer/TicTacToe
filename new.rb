@@ -19,12 +19,20 @@ class Game
     if(self.gameState.player == "O")
       puts "Enter a value #{self.gameState.possibleMoves} to place a piece"
       playerMove = gets.chomp.to_i
-      playerMove >= 0 && playerMove <= 8 ? nil : turn
-      self.gameState.move(playerMove)
-      self.displayBoard
+      if(playerMove >= 0 && playerMove <= 8 && self.gameState.possibleMoves.include?(playerMove))
+        self.gameState.move(playerMove)
+        self.displayBoard
+      else
+        self.turn
+      end
     else
-      self.ai.minimax(self.gameState)
-      self.gameState.move(self.ai.choice)
+      p self.gameState.turn
+      if(self.gameState.turn == 0)
+        self.gameState.move([0,2,6,8].sample)
+      else
+        self.ai.minimax(self.gameState)
+        self.gameState.move(self.ai.choice)
+      end
     end
   end
 
